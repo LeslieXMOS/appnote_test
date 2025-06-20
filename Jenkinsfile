@@ -3,76 +3,76 @@
 @Library('xmos_jenkins_shared_library@develop') _
 
 getApproval()
-// pipeline {
-//     agent {
-//         label 'documentation'
-//     }
-//     parameters {
-//         string(
-//             name: 'TOOLS_VERSION',
-//             defaultValue: '15.3.1',
-//             description: 'XTC tools version'
-//         )
-//         string(
-//             name: 'XMOSDOC_VERSION',
-//             defaultValue: 'v7.1.0',
-//             description: 'xmosdoc version'
-//         )
-//     }
+pipeline {
+    agent {
+        label 'documentation'
+    }
+    parameters {
+        string(
+            name: 'TOOLS_VERSION',
+            defaultValue: '15.3.1',
+            description: 'XTC tools version'
+        )
+        string(
+            name: 'XMOSDOC_VERSION',
+            defaultValue: 'v7.1.0',
+            description: 'xmosdoc version'
+        )
+    }
 
-//     options {
-//         skipDefaultCheckout()
-//         timestamps()
-//         buildDiscarder(xmosDiscardBuildSettings(onlyArtifacts = false))
-//     }
+    options {
+        skipDefaultCheckout()
+        timestamps()
+        buildDiscarder(xmosDiscardBuildSettings(onlyArtifacts = false))
+    }
 
-//     stages {
-//         stage('Checkout') {
-//             steps{
+    stages {
+        stage('Checkout') {
+            steps{
 
-//                 println "Stage running on ${env.NODE_NAME}"
+                println "Stage running on ${env.NODE_NAME}"
 
-//                 script {
-//                     def (server, user, repo) = extractFromScmUrl()
-//                     env.REPO_NAME = repo
-//                 }
+                script {
+                    def (server, user, repo) = extractFromScmUrl()
+                    env.REPO_NAME = repo
+                }
 
-//                 dir(REPO_NAME)
-//                 {
-//                     checkoutScmShallow()
-//                 }
-//             }
-//         }
+                dir(REPO_NAME)
+                {
+                    checkoutScmShallow()
+                }
+            }
+        }
 
-//         stage('Code build') {
-//             steps{
-//                 dir(REPO_NAME) {
-//                     xcoreBuild()
-//                 }
-//             }
-//         }
+        stage('Code build') {
+            steps{
+                dir(REPO_NAME) {
+                    xcoreBuild()
+                }
+            }
+        }
 
-//         stage('Doc build') {
-//             steps {
-//                 dir(REPO_NAME) {
-//                     buildDocs()
-//                 }
-//             }
-//         }
+        stage('Doc build') {
+            steps {
+                dir(REPO_NAME) {
+                    buildDocs()
+                }
+            }
+        }
 
-//         stage("Archive sandbox") {
-//             steps
-//             {
-//                 archiveSandbox(REPO_NAME)
-//             }
-//         }
+        stage("Archive sandbox") {
+            steps
+            {
+                archiveSandbox(REPO_NAME)
+            }
+        }
 
-//     } // stages
-//     post
-//     {
-//         cleanup
-//         {
-//              xcoreCleanSandbox()
-//         }
-//     }
-// } // pipeline
+    } // stages
+    post
+    {
+        cleanup
+        {
+             xcoreCleanSandbox()
+        }
+    }
+} // pipeline
